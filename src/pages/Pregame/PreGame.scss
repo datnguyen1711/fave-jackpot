@@ -1,0 +1,266 @@
+.main {
+}
+.reward {
+  background: linear-gradient(
+    133.94deg,
+    #de206a 0%,
+    #ff5858 97.88%,
+    #ff5858 98.21%
+  );
+  &-main {
+    padding: 40px 20px 17px;
+    height: 100%;
+    min-height: 331px;
+    .header {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 48px;
+      position: relative;
+      &-close {
+        width: 18px;
+        height: 18px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      &-tittle {
+        width: 126px;
+        height: 11.8px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+  &-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8px;
+    margin-bottom: 87px;
+  }
+  &-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    .reward-button {
+      width: 56px;
+      height: 56px;
+      background-color: #d53459;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    .reward-name {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 400;
+      text-align: center;
+      line-height: 15.57px;
+    }
+  }
+}
+.other {
+  background: #f7f7f7;
+  &-main {
+    padding: 26px 20px 20px;
+    height: 100%;
+    min-height: 381px;
+  }
+  &-title {
+    font-family: "TT Norms Pro";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 17px;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    color: #808080;
+    margin-bottom: 10px;
+  }
+  &-item {
+    background-color: #fff;
+    margin-bottom: 8px;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    border-radius: 12px;
+    max-height: 40px;
+  }
+  &-currency {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(
+      133.94deg,
+      #de206a 0%,
+      #ff5858 97.88%,
+      #ff5858 98.21%
+    );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 16px;
+    color: #fff;
+    font-family: "TT Norms Pro Medium";
+    font-size: 12px;
+  }
+  &-info {
+    &-name {
+      font-family: "TT Norms Pro Medium";
+      font-size: 17px;
+      line-height: 20.37px;
+      margin-bottom: 6px;
+    }
+    &-desc {
+      font-family: "TT Norms Pro";
+      font-style: normal;
+      font-size: 14px;
+      line-height: 17px;
+      color: #808080;
+    }
+  }
+}
+.works {
+  &-main {
+    padding: 36px 20px 0;
+    height: 100%;
+    min-height: 244px;
+    margin-bottom: 14px;
+  }
+  &-title {
+    font-family: "TT Norms Pro";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 17px;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    color: #808080;
+    margin-bottom: 9px;
+  }
+  &-line {
+    width: 100%;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin-bottom: 20px;
+  }
+  &-list {
+    padding-left: 5px;
+  }
+  &-item {
+    background-color: #fff;
+    margin-bottom: 26px;
+    display: flex;
+    align-items: flex-start;
+    border-radius: 12px;
+  }
+
+  &-number {
+    min-width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+    color: #000;
+    font-family: "TT Norms Pro Medium";
+    font-size: 17px;
+  }
+  &-info {
+    &-name {
+      font-family: "TT Norms Pro Medium";
+      font-size: 17px;
+      line-height: 20.37px;
+      margin-bottom: 5px;
+    }
+    &-desc {
+      font-family: "TT Norms Pro";
+      font-style: normal;
+      font-size: 14px;
+      line-height: 17px;
+      color: #808080;
+    }
+  }
+}
+.term {
+  margin-bottom: 22px;
+  &-main {
+    padding: 36px 30px 20px 20px;
+    height: 100%;
+    min-height: 244px;
+  }
+  &-title {
+    font-family: "TT Norms Pro";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 17px;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    color: #808080;
+    margin-bottom: 5px;
+  }
+  &-line {
+    width: 100%;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin-bottom: 22px;
+  }
+  &-item {
+    background-color: #fff;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: flex-start;
+    border-radius: 12px;
+  }
+  &-info {
+    &-name {
+      font-family: "TT Norms Pro Medium";
+      font-size: 16px;
+      line-height: 20.37px;
+      margin-bottom: 3px;
+    }
+    &-desc {
+      font-family: "TT Norms Pro Light";
+      font-style: normal;
+      font-size: 14px;
+      line-height: 17px;
+      color: #808080;
+      letter-spacing: 0.1px;
+    }
+  }
+}
+.handle {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  box-shadow: 0px -10px 10px rgba(0, 0, 0, 0.06);
+  &-button {
+    display: block;
+    padding: 13px 130px;
+    font-family: "TT Norms Pro";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 22px;
+    color: #fff;
+    background-color: #000;
+    border: none;
+    outline: none;
+    border-radius: 26px;
+  }
+}

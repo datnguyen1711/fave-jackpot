@@ -1,0 +1,62 @@
+.reward {
+  &-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    &-top {
+      position: absolute;
+      transform: translateY(-53%);
+      &-image {
+        &-1 {
+          position: relative;
+        }
+        &-2 {
+          position: absolute;
+          top: 61px;
+          left: 158px;
+        }
+      }
+    }
+    &-title {
+      padding: 4px 8px;
+      font-family: "TT Norms Pro Bold";
+      background-color: #000;
+      color: #fff;
+      border-radius: 20px;
+      position: absolute;
+      top: 0;
+      left: 50;
+      transform: translateY(-50%);
+      h3 {
+        font-size: 10px;
+        line-height: 13px;
+        text-align: center;
+        letter-spacing: 1px;
+      }
+    }
+    &-main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 17px 54px;
+      background-color: #fff;
+      position: relative;
+      border-radius: 16px;
+      h2 {
+        color: #000;
+        font-family: "TT Norms Pro Bold";
+        font-size: 19px;
+        font-weight: 700;
+        line-height: 22.76px;
+        margin-bottom: 2px;
+      }
+      p {
+        color: #808080;
+        font-size: 13px;
+        line-height: 15.57px;
+      }
+    }
+  }
+}
