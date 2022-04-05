@@ -1,0 +1,94 @@
+.cardMini {
+    width: 80px;
+    height: 80px;
+    background-color: #fff;
+    margin: 0 auto;
+    border-radius: 16px;
+    &-top {
+      width: 100%;
+      height: 18px;
+      background-color: #f6f6f6;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      position: relative;
+      img {
+          width: 20px;
+          height: 20px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-53%, 40%);
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+      }
+    }
+    &-main {
+      width: 100%;
+      height: 62px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+      h3 {
+        font-size: 22px;
+        font-family: "Number";
+      }
+      &-normal {
+        font-family: "TT Norms Pro Medium";
+        font-weight: 500;
+        font-size: 21px;
+        line-height: 25px;
+        text-align: center;
+        letter-spacing: -0.4px;
+      }
+      &-lucky {
+        width: 166px;
+        margin-top: 13px;
+        text-align: center;
+        span {
+          font-family: "TT Norms Pro Bold";
+          font-style: normal;
+          font-weight: 400;
+          font-size: 26px;
+          line-height: 32px;
+          color: #000000;
+        }
+      }
+    }
+    &-line {
+        width: 43px;
+        height: 2px;
+        background-color: #f6f6f6;
+        margin-top: 9px;
+        border-radius: 2px;
+    }
+  }
+  @keyframes appear {
+    0% {
+      margin-top: 6px;
+      opacity: 0;
+    }
+    100% {
+      margin-top: 0;
+      opacity: 1;
+    }
+  }
+  
+  .jackpot {
+    background: linear-gradient(
+      120.98deg,
+      #de206a -19.44%,
+      #ff5858 113.59%,
+      #ff5858 114.04%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .jackpot1 {
+    background: linear-gradient(120.98deg, #000000 -19.44%, #000000 113.59%, #000000 114.04%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .color {
+    background: #E83066;
+  }

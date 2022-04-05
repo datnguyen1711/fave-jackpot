@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./ClaimReward.scss";
 
 const ClaimReward = () => {
   const [value, setValue] = useState(null);
-  console.log(value);
+  const { state } = useLocation();
+  const navigate = useNavigate();
   const handleValueForm = (e) => {
     setValue(e.target.value);
   };
@@ -17,7 +19,7 @@ const ClaimReward = () => {
               <div className="claimReward-info-title">
                 <h3>YOU’VE WON</h3>
               </div>
-              <h2>₹ 50 cashback </h2>
+              <h2>₹ {state.numberReward} cashback </h2>
             </div>
           </div>
         </div>
@@ -88,12 +90,17 @@ const ClaimReward = () => {
             </div>
           </div>
         </div>
+        <div className="claimReward-question-bot">
+          <h3>The answer is incorrect</h3>
+        </div>
       </div>
       <div className="claimReward-handle">
         <button
           className={`claimReward-button ${value === null ? "disable" : ""}`}
           onClick={() => {
-            console.log("hihi");
+            navigate("/done-confirm", {
+              state: { numberReward: state.numberReward },
+            });
           }}
         >
           Submit

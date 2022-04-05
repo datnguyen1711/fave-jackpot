@@ -144,6 +144,10 @@ table {
   font-family: TT Norms Pro Light;
   src: url(./assets/fonts/TT\ Norms\ Pro\ Light.otf);
 }
+@font-face {
+  font-family: Number;
+  src: url(./assets/fonts/Helvetica-Condensed-Black.otf);
+}
 body {
   font-family: "TT Norms Pro", "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;

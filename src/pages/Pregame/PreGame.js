@@ -6,6 +6,7 @@ import phoneIcon from "../../assets/images/icons/phone.png";
 import rewardIcon from "../../assets/images/icons/reward.png";
 import tickIcon from "../../assets/images/icons/tick.png";
 import Reward from "../../components/Reward/Reward";
+import { Link } from "react-router-dom";
 
 const PreGame = () => {
   return (
@@ -41,7 +42,7 @@ const PreGame = () => {
               <div className="reward-name">Claim and use</div>
             </li>
           </ul>
-          <Reward />
+          <Reward visible={true} />
         </div>
       </div>
       <div className="other">
@@ -163,7 +164,9 @@ const PreGame = () => {
         </div>
       </div>
       <div className="handle">
-        <button className="handle-button">Continue</button>
+        <Link to="/playgame" style={{ textDecoration: "none" }}>
+          <button className="handle-button">Continue</button>
+        </Link>
       </div>
     </div>
   );
