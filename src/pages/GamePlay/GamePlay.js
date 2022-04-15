@@ -16,6 +16,7 @@ import CardMini from "../../components/CardMini/CardMini";
 import otherRewardSound from "../../assets/audio/otherRewards.wav";
 import luckySound from "../../assets/audio/betterLuck.wav";
 import jackpotSound from "../../assets/audio/jackpot.wav";
+import Modal from "../../components/Modal/Modal";
 
 const GamePlay = () => {
   const increment = useRef(null);
@@ -29,7 +30,9 @@ const GamePlay = () => {
   const [jackpotSounds] = useState(new Audio(jackpotSound));
   const [luckySounds] = useState(new Audio(luckySound));
   const [playing, setPlaying] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
+
   const [state, setState] = useState([
     {
       id: 1,
@@ -104,6 +107,31 @@ const GamePlay = () => {
       setState(updateStateRandom);
     }, 1000);
   };
+  // window.addEventListener("onbeforeunload", (event) => {
+  //   setShowPopup(true);
+  // });
+
+  // useEffect(() => {
+  //   if (performance.navigation.type === 1) {
+  //     console.log("This page is reloaded");
+  //   } else {
+  //     console.log("This page is not reloaded");
+  //   }
+  // }, [performance.navigation.type]);
+
+  // useBeforeunload(() => {
+  //   setShowPopup(true);
+  // });
+
+  // useEffect(() => {
+  //   window.onbeforeunload = function () {
+  //     return true;
+  //   };
+
+  //   return () => {
+  //     window.onbeforeunload = null;
+  //   };
+  // }, []);
 
   // Initial
   useEffect(() => {
@@ -112,9 +140,14 @@ const GamePlay = () => {
   const handlePlayGame = () => {
     clearInterval(increment.current);
     setFlipped(true);
+
+    // setShowPrompt(true);
     setTimeout(() => {
       startPlayToWin();
     }, 3000);
+  };
+  const handleClick = () => {
+    console.log("abc");
   };
   const randomGame = () => {
     const randomIndex = Math.floor(Math.random() * state.length);
@@ -218,10 +251,21 @@ const GamePlay = () => {
         <></>
       )}
       <div className="gamePlay">
+        {showPopup ? (
+          <Modal
+            title={"Incorrect answer"}
+            content={
+              "Come back on Friday to play again. Keep paying with Fave to win more."
+            }
+            handleClick={handleClick}
+          />
+        ) : (
+          <></>
+        )}
         <div className={`gamePlay-top`} id="main_top">
           <div className={`header ${visible ? "" : "visible"}`}>
             <div className={`header-close`}>
-              <img src={btnClose} alt="" />
+              <img src={btnClose} alt="" onClick={() => console.log("abc")} />
             </div>
             <div className={`header-title`}>
               <img src={faveTittle} alt="" />

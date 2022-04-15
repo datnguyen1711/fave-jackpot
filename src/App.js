@@ -4,11 +4,14 @@ import ClaimReward from "./pages/ClaimReward/ClaimReward";
 import GamePlay from "./pages/GamePlay/GamePlay";
 import PreGame from "./pages/Pregame/PreGame";
 import DoneReward from "./pages/DoneReward/DoneReward";
+import Modal from "./components/Modal/Modal";
+import { useState } from "react";
 
 function App() {
+  const [confirmOpen, setConfirmOpen] = useState(false);
   return (
     <div className="App">
-      <Routes>
+      <Routes getUserConfirmation={() => {}}>
         <Route path="/" element={<PreGame />} />
         <Route path="/playgame" element={<GamePlay />} />
         <Route path="/confirm" element={<ClaimReward />} />

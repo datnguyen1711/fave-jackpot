@@ -1,16 +1,57 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./ClaimReward.scss";
+import Modal from "../../components/Modal/Modal";
+import { useBeforeunload } from "react-beforeunload";
 
 const ClaimReward = () => {
+  const [checkbox, setCheckbox] = useState("");
   const [value, setValue] = useState(null);
   const { state } = useLocation();
   const navigate = useNavigate();
   const handleValueForm = (e) => {
-    setValue(e.target.value);
+    setCheckbox(e.target.value);
+  };
+  const handleSubmitQuestion = () => {
+    setValue(checkbox);
+    if (checkbox === "pink") {
+      navigate("/done-confirm", {
+        state: { numberReward: state.numberReward },
+      });
+    }
+  };
+
+  // useBeforeunload((event) => {
+  //   if (checkbox !== "pink") {
+  //     event.preventDefault();
+  //     const nativeAlert = window.alert;
+  //     window.alert = console.log; // Temporarily override the alert function
+  //     setValue(true);
+  //     window.alert = nativeAlert; // Restore it to default
+  //   }
+  // });
+
+  const handleClick = () => {
+    setValue(null);
+    setCheckbox("");
+    document.getElementById("blue").checked = false;
+    document.getElementById("yellow").checked = false;
+    document.getElementById("green").checked = false;
   };
   return (
     <div className="claimReward">
+      {value && value !== "pink" ? (
+        <Modal
+          title={"Incorrect answer"}
+          content={
+            "Come back on Friday to play again. Keep paying with Fave to win more."
+          }
+          handleClick={handleClick}
+          onExit={false}
+        />
+      ) : (
+        <></>
+      )}
       <div className="claimReward-header">
         <span>Claim your reward</span>
         <div className="claimReward-info">
@@ -90,18 +131,11 @@ const ClaimReward = () => {
             </div>
           </div>
         </div>
-        <div className="claimReward-question-bot">
-          <h3>The answer is incorrect</h3>
-        </div>
       </div>
       <div className="claimReward-handle">
         <button
-          className={`claimReward-button ${value === null ? "disable" : ""}`}
-          onClick={() => {
-            navigate("/done-confirm", {
-              state: { numberReward: state.numberReward },
-            });
-          }}
+          className={`claimReward-button ${checkbox === "" ? "disable" : ""}`}
+          onClick={handleSubmitQuestion}
         >
           Submit
         </button>
