@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import "./GamePlay.scss";
 import btnClose from "../../assets/images/main/close-button.png";
 import faveTittle from "../../assets/images/main/fave-title.svg";
@@ -16,11 +16,15 @@ import CardMini from "../../components/CardMini/CardMini";
 import otherRewardSound from "../../assets/audio/otherRewards.wav";
 import luckySound from "../../assets/audio/betterLuck.wav";
 import jackpotSound from "../../assets/audio/jackpot.wav";
-import Modal from "../../components/Modal/Modal";
+import { useCallbackPrompt } from "../../hooks/useCallbackPrompt";
+import Modal1 from "../../components/Modal/Modal1";
+import Context from "../../store/Context";
+import { saveData } from '../../store/action'
 
 const GamePlay = () => {
   const increment = useRef(null);
   const currentIndex = useRef(-1);
+  const indexStep = useRef(0);
   const [flipped, setFlipped] = useState(false);
   const [indexs, setIndexs] = useState(0);
   const [numberReward, setNumberReward] = useState(undefined);
@@ -29,9 +33,11 @@ const GamePlay = () => {
   const [otherSound] = useState(new Audio(otherRewardSound));
   const [jackpotSounds] = useState(new Audio(jackpotSound));
   const [luckySounds] = useState(new Audio(luckySound));
-  const [playing, setPlaying] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
+  const [showDialog, setShowDialog] = useState(true);
+  const [showPrompt, confirmNavigation, cancelNavigation] =
+    useCallbackPrompt(showDialog);
 
   const [state, setState] = useState([
     {
@@ -98,57 +104,36 @@ const GamePlay = () => {
       visible: true,
     },
   ]);
+  const [states, dispatch] = useContext(Context);
   const startAutoRearrange = () => {
-    increment.current = setInterval(() => {
-      let updateStateRandom = state
-        .map((value) => ({ value, sort: Math.random() }))
-        .sort((a, b) => a.sort - b.sort)
-        .map(({ value }) => value);
-      setState(updateStateRandom);
-    }, 1000);
+    if (showPrompt === false) {
+      increment.current = setInterval(() => {
+        let updateStateRandom = state
+          .map((value) => ({ value, sort: Math.random() }))
+          .sort((a, b) => a.sort - b.sort)
+          .map(({ value }) => value);
+        setState(updateStateRandom);
+      }, 1000);
+    } else {
+      clearInterval(increment.current)
+    }
   };
-  // window.addEventListener("onbeforeunload", (event) => {
-  //   setShowPopup(true);
-  // });
-
-  // useEffect(() => {
-  //   if (performance.navigation.type === 1) {
-  //     console.log("This page is reloaded");
-  //   } else {
-  //     console.log("This page is not reloaded");
-  //   }
-  // }, [performance.navigation.type]);
-
-  // useBeforeunload(() => {
-  //   setShowPopup(true);
-  // });
-
-  // useEffect(() => {
-  //   window.onbeforeunload = function () {
-  //     return true;
-  //   };
-
-  //   return () => {
-  //     window.onbeforeunload = null;
-  //   };
-  // }, []);
 
   // Initial
   useEffect(() => {
-    startAutoRearrange();
-  }, []);
+    if (flipped === false) {
+      startAutoRearrange();
+    }
+  }, [showPrompt, flipped]);
   const handlePlayGame = () => {
     clearInterval(increment.current);
     setFlipped(true);
 
-    // setShowPrompt(true);
     setTimeout(() => {
-      startPlayToWin();
+      setShowPopup(true)
     }, 3000);
   };
-  const handleClick = () => {
-    console.log("abc");
-  };
+
   const randomGame = () => {
     const randomIndex = Math.floor(Math.random() * state.length);
     if (currentIndex.current !== randomIndex) {
@@ -162,12 +147,20 @@ const GamePlay = () => {
     } else {
       return randomGame();
     }
+
   };
-  const startPlayToWin = () => {
-    increment.current = setInterval(() => {
-      randomGame();
-    }, 150);
-  };
+
+  useEffect(() => {
+    if (showPopup === true)
+      if (showPrompt === false) {
+        increment.current = setInterval(() => {
+          randomGame();
+        }, 150);
+      } else {
+        clearInterval(increment.current)
+      }
+  }, [showPrompt, showPopup])
+
   const handleStopGame = () => {
     clearInterval(increment.current);
     let updateState = state;
@@ -188,7 +181,8 @@ const GamePlay = () => {
     showConfetti();
   };
   const handleClaimReward = () => {
-    navigate("/confirm", { state: { numberReward: numberReward } });
+    navigate("/confirm");
+    dispatch(saveData(numberReward))
   };
   const showReward = () => {
     const getRe = setTimeout(() => {
@@ -213,167 +207,167 @@ const GamePlay = () => {
       value === "5,000"
         ? jackpotSounds.play()
         : value === "noReward"
-        ? luckySounds.play()
-        : otherSound.play();
+          ? luckySounds.play()
+          : otherSound.play();
     }, 3000);
     return () => clearTimeout(playingSound);
   };
   return (
-    <div className="main">
-      {isConfetti && numberReward === "5,000" ? (
-        <div>
-          <Confetti
-            width={window.outerWidth}
-            height={window.outerHeight}
-            numberOfPieces={"1500"}
-            confettiSource={{
-              w: 10,
-              h: 10,
-              x: 0,
-              y: 300,
-            }}
-            recycle={false}
-          />
-          <Confetti
-            width={window.outerWidth}
-            height={window.outerHeight}
-            numberOfPieces={"1500"}
-            confettiSource={{
-              w: 10,
-              h: 10,
-              x: window.outerWidth,
-              y: 300,
-            }}
-            recycle={false}
-          />
-        </div>
-      ) : (
-        <></>
-      )}
-      <div className="gamePlay">
-        {showPopup ? (
-          <Modal
-            title={"Incorrect answer"}
-            content={
-              "Come back on Friday to play again. Keep paying with Fave to win more."
-            }
-            handleClick={handleClick}
-          />
+    <>
+      <Modal1
+        title="Are you sure you want to leave?"
+        content='If you exit the game, you will not be able to play again until Friday.'
+        titleButton={'Keep playing'}
+        showPrompt={showPrompt}
+        confirmNavigation={confirmNavigation}
+        cancelNavigation={cancelNavigation}
+      />
+      <div className="main">
+        {isConfetti && numberReward === "5,000" ? (
+          <div>
+            <Confetti
+              width={window.outerWidth}
+              height={window.outerHeight}
+              numberOfPieces={"1500"}
+              confettiSource={{
+                w: 10,
+                h: 10,
+                x: 0,
+                y: 300,
+              }}
+              recycle={false}
+            />
+            <Confetti
+              width={window.outerWidth}
+              height={window.outerHeight}
+              numberOfPieces={"1500"}
+              confettiSource={{
+                w: 10,
+                h: 10,
+                x: window.outerWidth,
+                y: 300,
+              }}
+              recycle={false}
+            />
+          </div>
         ) : (
           <></>
         )}
-        <div className={`gamePlay-top`} id="main_top">
-          <div className={`header ${visible ? "" : "visible"}`}>
-            <div className={`header-close`}>
-              <img src={btnClose} alt="" onClick={() => console.log("abc")} />
+        <div className="gamePlay">
+          <div className={`gamePlay-top`} id="main_top">
+            <div className={`header ${visible ? "" : "visible"}`}>
+              <div className={`header-close`}>
+                <img src={btnClose} alt="" onClick={() => console.log("abc")} />
+              </div>
+              <div className={`header-title`}>
+                <img src={faveTittle} alt="" />
+              </div>
             </div>
-            <div className={`header-title`}>
-              <img src={faveTittle} alt="" />
+            <Reward visible={visible} />
+          </div>
+          <div className="gamePlay-main">
+            <div className={`gamePlay-main-title ${visible ? "" : "visible"}`}>
+              <div className="line"></div>
+              <div className="title">
+                {flipped ? "STOP TO REVEAL REWARD" : "PLAY TO WIN"}
+              </div>
+            </div>
+            <div className="gamePlay-cardGrid" id="main_place">
+              {state.map((card) => (
+                <CardMini card={card} flipped={flipped} indexs={indexs} />
+              ))}
             </div>
           </div>
-          <Reward visible={visible} />
-        </div>
-        <div className="gamePlay-main">
-          <div className={`gamePlay-main-title ${visible ? "" : "visible"}`}>
-            <div className="line"></div>
-            <div className="title">
-              {flipped ? "STOP TO REVEAL REWARD" : "PLAY TO WIN"}
-            </div>
-          </div>
-          <div className="gamePlay-cardGrid" id="main_place">
-            {state.map((card) => (
-              <CardMini card={card} flipped={flipped} indexs={indexs} />
-            ))}
-          </div>
-        </div>
-        <div className="content" id="add-content"></div>
-        <div
-          className={`button-click ${
-            numberReward === "noReward"
+          <div className="content" id="add-content"></div>
+          <div
+            className={`button-click ${numberReward === "noReward"
               ? " button-click-double"
               : " button-click-single"
-          }`}
-          id="button-click"
-        >
-          {numberReward === "noReward" ? (
-            <button
-              className={`${numberReward ? "invisible" : ""}`}
-              style={{
-                backgroundColor: "transparent",
-                border: "2px solid #fff",
-              }}
-            >
-              View rewards
-            </button>
-          ) : (
-            false
-          )}
-          <button
-            onClick={
-              flipped
-                ? numberReward
-                  ? handleClaimReward
-                  : handleStopGame
-                : handlePlayGame
-            }
-            disabled={flipped && currentIndex.current === -1}
-            className={`${numberReward ? "invisible" : ""}`}
+              }`}
+            id="button-click"
           >
-            {flipped
-              ? numberReward
-                ? numberReward === "noReward"
-                  ? "Back to home"
-                  : "Claim Reward"
-                : "Stop"
-              : "Play"}
-          </button>
+            {numberReward === "noReward" ? (
+              <button
+                className={`${numberReward ? "invisible" : ""}`}
+                style={{
+                  backgroundColor: "transparent",
+                  border: "2px solid #fff",
+                }}
+              >
+                View rewards
+              </button>
+            ) : (
+              false
+            )}
+            <button
+              onClick={
+                flipped
+                  ? numberReward
+                    ? handleClaimReward
+                    : handleStopGame
+                  : handlePlayGame
+              }
+              disabled={flipped && currentIndex.current === -1}
+              className={`${numberReward ? "invisible" : ""}`}
+            >
+              {flipped
+                ? numberReward
+                  ? numberReward === "noReward"
+                    ? "Back to home"
+                    : "Claim Reward"
+                  : "Stop"
+                : "Play"}
+            </button>
+          </div>
         </div>
-      </div>
-      <div id="cardReward" style={{ display: "none" }}>
-        <CardWinner numberReward={numberReward} />
-      </div>
-      <div id="rewardWonTitle" style={{ display: "none" }}>
-        <div className="rewardWonTitle">
-          {numberReward !== "noReward" ? (
-            <>
-              <img src={wheel} alt="" className="rewardWonTitle-img1" />
-            </>
-          ) : (
-            <></>
-          )}
-          <img
-            src={
-              numberReward === "5,000"
-                ? jackpot
-                : numberReward === "noReward"
-                ? noRewardTitle
-                : titleWon
-            }
-            alt=""
-            className={`rewardWonTitle-img2 ${
-              numberReward === "5,000"
+        <div id="cardReward" style={{ display: "none" }}>
+          <CardWinner numberReward={numberReward} />
+        </div>
+        <div id="rewardWonTitle" style={{ display: "none" }}>
+          <div className="rewardWonTitle">
+            {numberReward !== "noReward" ? (
+              <>
+                <img src={wheel} alt="" className="rewardWonTitle-img1" />
+              </>
+            ) : (
+              <></>
+            )}
+            <img
+              src={
+                numberReward === "5,000"
+                  ? jackpot
+                  : numberReward === "noReward"
+                    ? noRewardTitle
+                    : titleWon
+              }
+              alt=""
+              className={`rewardWonTitle-img2 ${numberReward === "5,000"
                 ? "jackpot-title"
                 : numberReward === "noReward"
-                ? "noReward-title"
-                : ""
-            }`}
-          />
+                  ? "noReward-title"
+                  : ""
+                }`}
+            />
+          </div>
+        </div>
+        <div id="content" style={{ display: "none" }}>
+          <h1
+            className={`content-add ${numberReward !== "noReward" ? "" : "small"
+              }`}
+          >
+            {numberReward !== "noReward" ? (
+              <>
+                Claim this reward to get it in your bank account.
+              </>
+            ) : (
+              <>
+                Keep paying with Fave to play again
+              </>
+            )}
+          </h1>
         </div>
       </div>
-      <div id="content" style={{ display: "none" }}>
-        <h1
-          className={`content-add ${
-            numberReward !== "noReward" ? "" : "small"
-          }`}
-        >
-          {numberReward !== "noReward" ? (
-            <>Claim this reward to get it in your bank account.</>
-          ) : (
-            <>Keep paying with Fave to play again</>
-          )}
-        </h1>
-      </div>
-    </div>
+    </>
   );
 };
 export default GamePlay;

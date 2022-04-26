@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./DoneReward.scss";
 import checked from "../../assets/images/icons/checked.svg";
 import bgCard from "../../assets/images/main/bg-card.svg";
+import Context from "../../store/Context";
 
 const DoneReward = () => {
   const [value, setValue] = useState(null);
-  const { state } = useLocation();
+  const [state, dispatch] = useContext(Context);
   const handleValueForm = (e) => {
     setValue(e.target.value);
   };
@@ -28,7 +29,7 @@ const DoneReward = () => {
         </div>
         <div className="doneReward-question-card">
           <div className="doneReward-question-image">
-            <span>₹{state.numberReward}</span>
+            <span>₹{state.data}</span>
           </div>
         </div>
         <p className="doneReward-question-desc">
